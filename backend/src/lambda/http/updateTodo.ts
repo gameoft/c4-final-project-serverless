@@ -17,6 +17,19 @@ export const handler: APIGatewayProxyHandler = async (
   const updatedTodo: UpdateTodoRequest = JSON.parse(event.body)
   console.log('Update todo: ', todoId, updatedTodo)
 
+  if (updatedTodo.name == '') {
+    const errmessage = 'Please insert a name for todo item.'
+
+    return {
+      statusCode: 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true
+      },
+      body: JSON.stringify({ errmessage })
+    }
+  }
+
   const item = await updateTodo(event, updatedTodo)
 
   return {
